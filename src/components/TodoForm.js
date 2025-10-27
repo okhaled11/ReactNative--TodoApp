@@ -1,10 +1,11 @@
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { styles } from "../styles";
-import { useTodos } from "../context/TodoContext";
+import { addTodo } from "../redux/todosSlice";
 
 const TodoForm = () => {
-  const { addTodo } = useTodos();
+  const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
@@ -18,7 +19,7 @@ const TodoForm = () => {
         completed: false
     }
 
-    addTodo(obj);
+    dispatch(addTodo(obj));
     setDescription('');
     setTitle('');
   }

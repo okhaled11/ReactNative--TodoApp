@@ -1,10 +1,16 @@
+import { useEffect } from "react";
+import { Provider } from "react-redux";
 import Router from "./src/Router/Router";
-import { TodoProvider } from "./src/context/TodoContext";
+import { store, loadTodosFromStorage } from "./src/redux/store";
 
 export default function App() {
+  useEffect(() => {
+    loadTodosFromStorage();
+  }, []);
+
   return (
-    <TodoProvider>
+    <Provider store={store}>
       <Router />
-    </TodoProvider>
+    </Provider>
   );
 }

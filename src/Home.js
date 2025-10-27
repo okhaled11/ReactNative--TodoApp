@@ -1,12 +1,14 @@
 import { View, Text, TouchableOpacity } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 import { styles } from "./styles";
 import TodoForm from "./components/TodoForm";
 import Todos from "./components/Todos";
 import { useState } from "react";
-import { useTodos } from "./context/TodoContext";
+import { selectAllTodos, deleteTodo, toggleTodo, clearAllTodos } from "./redux/todosSlice";
 
 const Home = () => {
-  const { todos, deleteTodo, toggleTodo } = useTodos();
+  const dispatch = useDispatch();
+  const todos = useSelector(selectAllTodos);
   const [filter, setFilter] = useState("all");
 
   const getFilteredTodos = () => {
@@ -16,10 +18,17 @@ const Home = () => {
   };
 
   const filteredTodos = getFilteredTodos();
-  const clearTodos = () => {
-    setTodos([]);
-    AsyncStorage.removeItem("todos");
+  
+  const handleDeleteTodo = (id) => {
+    dispatch(deleteTodo(id));
+  };
 
+  const handleToggleTodo = (id) => {
+    dispatch(toggleTodo(id));
+  };
+
+  const clearTodos = () => {
+    dispatch(clearAllTodos());
   };
 
   return (
@@ -88,8 +97,8 @@ const Home = () => {
 
       <Todos
         todos={filteredTodos}
-        deleteTodo={deleteTodo}
-        toggleTodo={toggleTodo}
+        deleteTodo={handleDeleteTodo}
+        toggleTodo={handleToggleTodo}
       />
     </View>
   );
